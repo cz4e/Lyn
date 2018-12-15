@@ -16,7 +16,7 @@ mnist = input_data.read_data_sets("MNIST_data",one_hot=True)
 c = 3e8
 Hz = 0.4e12
 
-def _propogation(u0, d=delta, N = size, dL = dL, lmb = 632.8e-9,theta=0.0):
+def _propogation(u0, d=delta, N = size, dL = dL, lmb = c/Hz,theta=0.0):
     #Parameter 
     df = 1.0/dL
     k = np.pi*2.0/lmb
