@@ -32,25 +32,6 @@ def _propogation(u0, d=delta, N = size, dL = dL, lmb = 632.8e-9,theta=0.0):
     H = np.exp(1.0j*k*d)*np.exp(-1.0j*lmb*np.pi*d*ph) 
     #Result
     return tf.ifft2d(np.fft.fftshift(H)*tf.fft2d(u0)*dL*dL/(N*N))*N*N*df*df
-
-def _propogation_phase_out(u0,d = delta,N = size,dL = dL,lmb = 632.8e-9,theta=np.pi/36):
-   
-    d = 2*d+np.fromfunction(lambda x,y:(y+1)*dL/N*np.tan(theta),(N,N),dtype=np.float32)
-    df = 1.0/dL
-    k = np.pi*2.0/632.8e-9
-    D= dL*dL/(N*lmb)
-    
-    def phase(i,j):
-        i -= N//2
-        j -= N//2
-        return ((i*df)*(i*df)+(j*df)*(j*df))
-      
-    ph  = np.fromfunction(phase,shape=(N,N),dtype=np.float32)
-    H = np.exp(1.0j*k*d)*np.exp(-1.0j*lmb*np.pi*d*ph)
-    return tf.ifft2d(np.fft.fftshift(H)*tf.fft2d(u0)*dL*dL/(N*N))*N*N*df*df
-    
-def _propogation_phase_in(u0,d = delta,N = size,dL = dL,lmb = 632.8e-9):
-    return _propogation_phase_out(u0)
   
 def propogation(u0,d,function=_propogation):
     return tf.map_fn(function,u0)
